@@ -17,22 +17,26 @@ MUSIC_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class Player():
     key_assignments = {
-        keyboard.KeyCode.from_char('0'): 'Stop',
-        keyboard.KeyCode.from_char('1'): os.path.join(MUSIC_DIR, 'battle_music_1.mp3'),
-        keyboard.KeyCode.from_char('2'): os.path.join(MUSIC_DIR, 'battle_music_2.mp3'),
-        keyboard.KeyCode.from_char('3'): os.path.join(MUSIC_DIR, 'battle_music_3.mp3'),
-        keyboard.KeyCode.from_char('4'): os.path.join(MUSIC_DIR, 'forest_sounds_1.mp3'),
-        keyboard.KeyCode.from_char('5'): os.path.join(MUSIC_DIR, 'town_sounds_1.mp3'),
-        keyboard.KeyCode.from_vk(65437): os.path.join(MUSIC_DIR, 'town_sounds_1.mp3'),
-        keyboard.KeyCode.from_char('6'): os.path.join(MUSIC_DIR, 'tavern_sounds_1.mp3'),
+        keyboard.KeyCode.from_char('0'): os.path.join(MUSIC_DIR, 'battle_music_1.mp3'),
+        keyboard.KeyCode.from_char('000'): os.path.join(MUSIC_DIR, 'battle_music_2.mp3'),
+        keyboard.KeyCode.from_char('.'): os.path.join(MUSIC_DIR, 'battle_music_3.mp3'),
+        keyboard.KeyCode.from_char(','): os.path.join(MUSIC_DIR, 'battle_music_3.mp3'),
+        keyboard.KeyCode.from_char('1'): os.path.join(MUSIC_DIR, 'forest_sounds_1.mp3'),
+        keyboard.KeyCode.from_char('2'): os.path.join(MUSIC_DIR, 'town_sounds_1.mp3'),
+        keyboard.KeyCode.from_char('3'): os.path.join(MUSIC_DIR, 'tavern_sounds_1.mp3'),
+        keyboard.KeyCode.from_char('4'): os.path.join(MUSIC_DIR, 'cave_sounds_1.m4a'),
+        keyboard.KeyCode.from_char('5'): os.path.join(MUSIC_DIR, 'crowded_bar_1.opus'),
+        keyboard.KeyCode.from_vk(65437): None,
+        keyboard.KeyCode.from_char('6'): os.path.join(MUSIC_DIR, 'orc_grunts.m4a'),
         keyboard.KeyCode.from_char('7'): os.path.join(MUSIC_DIR, 'holst_neptune.opus'),
         keyboard.KeyCode.from_char('8'): os.path.join(MUSIC_DIR, 'holst_saturn.opus'),
         keyboard.KeyCode.from_char('9'): os.path.join(MUSIC_DIR, 'holst_mars.ogg'),
-        keyboard.KeyCode.from_char('.'): os.path.join(MUSIC_DIR, 'victory_fanfare.m4a'),
-        keyboard.KeyCode.from_char(','): os.path.join(MUSIC_DIR, 'victory_fanfare.m4a'),
-        keyboard.Key.enter: 'Pause',
+        keyboard.Key.enter: 'Stop',
+        keyboard.Key.backspace: 'Pause',
         keyboard.KeyCode.from_char('-'): 'VolDown',
         keyboard.KeyCode.from_char('+'): 'VolUp',
+        keyboard.KeyCode.from_char('*'): os.path.join(MUSIC_DIR, 'victory_fanfare.m4a'),
+        keyboard.KeyCode.from_char('/'): None,
     }
     _player = None
     volume = 100
@@ -82,18 +86,18 @@ class Player():
     
     def on_press(self, key):
         log.debug("Pressed key %s", key)
-        song_file = self.key_assignments.get(key, None)
-        if song_file == "Stop":
+        action = self.key_assignments.get(key, None)
+        if action == "Stop":
             self.stop_music()
-        elif song_file == 'VolUp':
+        elif action == 'VolUp':
             self.change_volume(10)
-        elif song_file == 'VolDown':
+        elif action == 'VolDown':
             self.change_volume(-10)
-        elif song_file == 'Pause':
+        elif action == 'Pause':
             self.toggle_pause()
-        elif song_file is not None:
+        elif action is not None:
             self.stop_music()
-            self.start_music(song_file)
+            self.start_music(action)
     
     def change_volume(self, delta_vol):
         new_vol = self.volume + delta_vol
