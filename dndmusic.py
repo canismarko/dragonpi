@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 
 """Monitor the keyboard numberpad and play music for certain
 key-presses."""
@@ -11,7 +11,8 @@ import time
 from pynput import keyboard
 import vlc
 
-MUSIC_DIR = '/home/mwolf/src/dndmusic/'
+MUSIC_DIR = os.path.abspath(os.path.dirname(__file__))
+# MUSIC_DIR = '/home/mwolf/src/dndmusic/'
 
 
 class Player():
@@ -40,7 +41,7 @@ class Player():
     max_volume = 100
     
     def __init__(self):
-        self.instance = vlc.Instance('--input-repeat=999999')
+        self.instance = vlc.Instance('--input-repeat=999999', '--quiet')
    
     def stop_music(self):
         if self._player is not None:
@@ -112,6 +113,7 @@ def monitor_keypresses():
     player = Player()
     listener = keyboard.Listener(on_press=player.on_press)
     with listener:
+        log.info("D&D Music started. Waiting for keypress...")
         listener.join()
 
 def main():
