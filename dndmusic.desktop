@@ -1,4 +1,4 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/.local/bin/python3 /home/pi/dndmusic/dndmusic.py
+Exec=/home/pi/.local/bin/python3 /home/pi/dragopi/dragopi/dndmusic.py
 Terminal=true

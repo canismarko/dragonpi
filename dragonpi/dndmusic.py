@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """Monitor the keyboard numberpad and play music for certain
 key-presses."""
 
@@ -11,12 +9,12 @@ import time
 from pynput import keyboard
 import vlc
 
-MUSIC_DIR = os.path.abspath(os.path.dirname(__file__))
-# MUSIC_DIR = '/home/mwolf/src/dndmusic/'
+THIS_DIR = os.path.abspath(os.path.dirname(__file__))
+MUSIC_DIR = os.path.join(THIS_DIR, 'audio/')
 
 FADE_TIME = 1.5
 
-class Player():
+class MusicListener(keyboard.Listener):
     # List of key assignments: (song_file, volume, fade_time)
     key_assignments = {
         keyboard.KeyCode.from_char('0'): ('battle_music_1.mp3', 100, FADE_TIME),
@@ -46,8 +44,10 @@ class Player():
     min_volume = 0
     max_volume = 100
     
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.instance = vlc.Instance('--input-repeat=999999', '--quiet')
+        # Setup the keyboard listener
+        super().__init__(on_press=self.on_press, *args, **kwargs)
    
     def stop_music(self, fade_time=FADE_TIME):
         if self._player is not None:
@@ -66,7 +66,7 @@ class Player():
             # Fade in the volume
             for i in range(self.fade_steps):
                 curr_vol = curr_vol + delta_vol/self.fade_steps
-                log.debug("Volume set to %d", curr_vol)
+                log.debug("Volume set to %d", round(curr_vol))
                 self._player.audio_set_volume(round(curr_vol))
                 time.sleep(fade_time / self.fade_steps)
             log.debug('Faded volume from %d to %d', init_vol, round(curr_vol))
@@ -117,18 +117,7 @@ class Player():
             log.debug("Changed volume from %d to %d", old_vol, new_vol)
         else:
             log.info("Volume NOT changed from %d to %d", old_vol, new_vol)
-
-
-def monitor_keypresses():
-    player = Player()
-    listener = keyboard.Listener(on_press=player.on_press)
-    with listener:
+    
+    def join(self, *args, **kwargs):
         log.info("D&D Music started. Waiting for keypress...")
-        listener.join()
-
-def main():
-    monitor_keypresses()
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-    main()
+        return super().join(*args, **kwargs)
