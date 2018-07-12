@@ -1,2 +1,4 @@
 pynput
 python-vlc
+RPi.GPIO
+Adafruit-GPIO

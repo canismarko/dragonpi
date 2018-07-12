@@ -3,8 +3,10 @@
 import logging
 log = logging.getLogger(__name__)
 import argparse
+from threading import Thread
 
 from .dndmusic import MusicListener
+from .lcdmenu import LCDMenu, AudioOutput, Greeting
 
 def parse_args():
     """Parse the command-line arguments and return the options."""
@@ -16,14 +18,29 @@ def parse_args():
     return args
 
 
+def start_music():
+    # Load the listener for doing music keypresses
+    with MusicListener() as music:
+        music.join()
+
+
+def start_lcd():
+    lcdmenu = LCDMenu()
+    entries = [Greeting(), AudioOutput()]
+    lcdmenu.add_entries(*entries)
+
+
 def main():
     args = parse_args()
     # Prepare logging if requested
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
-    # Load the listener for doing music keypresses
-    with MusicListener() as music:
-        music.join()
+    # Start the music handler
+    music_thread = Thread(target=start_music)
+    music_thread.start()
+    # Start the LCD menu
+    lcd_thread = Thread(target=start_lcd)
+    lcd_thread.start()
 
 
 if __name__ == "__main__":

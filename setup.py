@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name='DragonPi',
+    name='dragonpi',
     version='0.1',
     author='Mark Wolfman',
     author_email='canismarko@gmail.com',
