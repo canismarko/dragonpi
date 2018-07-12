@@ -5,8 +5,8 @@ log = logging.getLogger(__name__)
 import argparse
 from threading import Thread
 
-from .dndmusic import MusicListener
-from .lcdmenu import LCDMenu, AudioOutput, Greeting
+from dragonpi.dndmusic import MusicListener
+from dragonpi.lcdmenu import LCDMenu, AudioOutput, Greeting
 
 def parse_args():
     """Parse the command-line arguments and return the options."""
@@ -28,6 +28,7 @@ def start_lcd():
     lcdmenu = LCDMenu()
     entries = [Greeting(), AudioOutput()]
     lcdmenu.add_entries(*entries)
+    lcdmenu.join()
 
 
 def main():
