@@ -44,6 +44,15 @@ class DummyLCD():
     def message(self, s, *args, **kwargs):
         log.debug('Dummy logger message: %s', s)
 
+    def set_color(self, *color):
+        log.debug('Dummy color set: %s', str(color))
+
+    def create_char(self, char, val):
+        log.debug('Dummy LCD char created: %s, %s', str(char), str(val))
+
+    def is_pressed(self, btn):
+        return False
+
 
 class LCDMenu():
     _active_item_idx = 0
@@ -64,7 +73,7 @@ class LCDMenu():
             try:
                 from .Adafruit_CharLCD import Adafruit_CharLCDPlate, SELECT
                 lcd = Adafruit_CharLCDPlate()
-            except RuntimeError:
+            except (RuntimeError, OSError):
                 log.warning('Could not load Adafruit_CharLCDPlate')
                 warnings.warn("Could not load ADafruit_CharLCDPlate", RuntimeWarning)
                 lcd = DummyLCD()

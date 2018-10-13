@@ -27,31 +27,39 @@ import vlc
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 MUSIC_DIR = os.path.join(THIS_DIR, 'audio/')
 
+# Cross fade intervals, in second
 FADE_TIME = 1.5
+BATTLE_FADE_TIME = 0.3
+VICTORY_FADE_TIME = 0.2
+
+key_from_char = keyboard.KeyCode.from_char
+key_from_vk = keyboard.KeyCode.from_vk
 
 class MusicListener(keyboard.Listener):
     # List of key assignments: (song_file, volume, fade_time)
     key_assignments = {
-        keyboard.KeyCode.from_char('0'): ('battle_music_1.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('000'): ('battle_music_2.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('.'): ('battle_music_3.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char(','): ('battle_music_3.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('1'): ('forest_sounds_1.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('2'): ('town_sounds_1.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('3'): ('tavern_sounds_1.mp3', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('4'): ('cave_sounds_1.m4a', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('5'): ('crowded_bar_1.opus', 100, FADE_TIME),
-        keyboard.KeyCode.from_vk(65437): ('crowded_bar_1.opus', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('6'): ('orc_grunts.m4a', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('7'): ('holst_neptune.opus', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('8'): ('holst_saturn.opus', 100, FADE_TIME),
-        keyboard.KeyCode.from_char('9'): ('holst_mars.ogg', 100, FADE_TIME),
+        key_from_char('1'): ('battle_music_1.mp3', 100, BATTLE_FADE_TIME),
+        # key_from_char('000'): ('battle_music_2.mp3', 100, FADE_TIME),
+        key_from_char('4'): ('battle_music_2.mp3', 100, BATTLE_FADE_TIME),
+        key_from_char('7'): ('battle_music_3.mp3', 100, BATTLE_FADE_TIME),
+        key_from_char('9'): ('forest_sounds_1.mp3', 100, FADE_TIME),
+        key_from_char('.'): ('town_sounds_1.mp3', 100, FADE_TIME),
+        key_from_char(','): ('town_sounds_1.mp3', 100, FADE_TIME),
+        key_from_char('3'): ('tavern_sounds_1.mp3', 100, FADE_TIME),
+        key_from_char('6'): ('cave_sounds_1.m4a', 100, FADE_TIME),
+        key_from_char('/'): ('goblins_1.opus', 100, FADE_TIME),
+        # key_from_vk(65437): ('crowded_bar_1.opus', 100, FADE_TIME),
+        key_from_char('*'): ('orc_grunts.m4a', 100, FADE_TIME),
+        key_from_char('2'): ('holst_neptune.opus', 100, FADE_TIME),
+        key_from_char('5'): ('holst_saturn.opus', 100, FADE_TIME),
+        key_from_vk(65437): ('holst_saturn.opus', 100, FADE_TIME),
+        key_from_char('8'): ('holst_mars.ogg', 100, FADE_TIME),
         keyboard.Key.enter: ('Stop', None, None),
         keyboard.Key.backspace: ('Pause', None, None),
-        keyboard.KeyCode.from_char('-'): ('VolDown', None, None),
-        keyboard.KeyCode.from_char('+'): ('VolUp', None, None),
-        keyboard.KeyCode.from_char('*'): ('victory_fanfare.m4a', 100, 0.2),
-        keyboard.KeyCode.from_char('/'): (None, None, None),
+        key_from_char('-'): ('VolDown', None, None),
+        key_from_char('+'): ('VolUp', None, None),
+        key_from_char('0'): ('victory_fanfare.m4a', 100, VICTORY_FADE_TIME),
+        # key_from_char('/'): (None, None, None),
     }
     _player = None
     volume = 100

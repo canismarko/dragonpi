@@ -35,7 +35,7 @@ def main():
     args = parse_args()
     # Prepare logging if requested
     if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
     # Start the music handler
     music_thread = Thread(target=start_music)
     music_thread.start()
