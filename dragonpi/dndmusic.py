@@ -122,7 +122,8 @@ class MusicListener(keyboard.Listener):
         elif action == 'Pause':
             self.toggle_pause()
         elif action is not None:
-            self.volume = vol
+            vol_ratio = vol / 100 if vol is not None else 1
+            self.volume *= vol_ratio
             song_file = os.path.join(MUSIC_DIR, action)
             self.stop_music(fade_time=fade_time)
             self.start_music(song_file, fade_time=fade_time)

@@ -85,7 +85,6 @@ class LCDMenu():
     def init_lcd(self):
         self.lcd.set_color(*self.WHITE)
         # Set custom characters
-        print(int_from_hex_string(CHECKMARK))
         self.lcd.create_char(int_from_hex_string(CHECKMARK),
                              [0,1,3,22,28,8,0,0])
         
